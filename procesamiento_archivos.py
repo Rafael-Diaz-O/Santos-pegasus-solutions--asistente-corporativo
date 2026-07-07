@@ -1,5 +1,6 @@
-import os
+import os  #Manipulacion de rutas de archivo 
 import fitz # PyMuPDF: la herramienta que "lee" los PDF
+from funciones_limpieza_archivos import limpiador_archivos_pdf_con_tablas  # Importamos la función que limpia los archivos PDF con tablas
 
 #from openai import OpenAI
 
@@ -13,7 +14,8 @@ carpeta = "Informacion_de_la_empresa"
 for nombre_archivo in os.listdir(carpeta):
     
     # 3. os.path.join une el nombre de la carpeta con el nombre del archivo.
-    # Resultado: "Informacion_de_la_empresa/archivo.pdf" (la ruta exacta que Python necesita).
+    # Resultado: "Informacion_de_la_empresa/archivo.pdf" (la ruta exacta que Python necesita). 
+    #El path garantiza que funcione en cualquier sistema operativo (Windows, Linux, Mac).
     ruta_completa = os.path.join(carpeta, nombre_archivo)
     
     # 4. Verificamos que sea un archivo y no una subcarpeta.
@@ -28,14 +30,30 @@ for nombre_archivo in os.listdir(carpeta):
         if nombre_archivo.endswith(".pdf"):
             # Aquí pondrías la lógica: abrir con fitz, extraer texto, enviar a la IA.
             print(f"--> Detectado archivo PDF: {nombre_archivo}")
+
+            print("Prueba_ 1")
+            resultado = limpiador_archivos_pdf_con_tablas(ruta_completa)
+
+            print(resultado)
             
         elif nombre_archivo.endswith(".txt"):
             # Aquí pondrías la lógica: abrir con open(), leer el texto, enviar a la IA.
             print(f"--> Detectado archivo de texto: {nombre_archivo}")
-            
+            print("Se encuentra en desarrollo por favor cargue solo pdf ")
+        
+        elif nombre_archivo.endswith(".csv"):
+            # Aquí pondrías la lógica: abrir con pandas, procesar datos, enviar a la IA.
+            print(f"--> Detectado archivo CSV: {nombre_archivo}")   
+            print("Se encuentra en desarrollo por favor cargue solo pdf ")
+
         else:
             # Si es un formato que no has programado aún, lo saltamos.
             print(f"--> Formato no soportado: {nombre_archivo}")
+
+
+
+
+
 
 
 
