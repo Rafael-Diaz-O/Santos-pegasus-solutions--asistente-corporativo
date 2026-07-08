@@ -1,6 +1,7 @@
 import os  #Manipulacion de rutas de archivo 
 import fitz # PyMuPDF: la herramienta que "lee" los PDF
 from funciones_limpieza_archivos import limpiador_archivos_pdf_con_tablas  # Importamos la función que limpia los archivos PDF con tablas
+from funciones_limpieza_archivos import limpiar_y_dividir_archivos  # Importamos la función que limpia y divide el texto en chunks
 
 #from openai import OpenAI
 
@@ -8,6 +9,8 @@ from funciones_limpieza_archivos import limpiador_archivos_pdf_con_tablas  # Imp
 
 # Definimos dónde está nuestra "biblioteca" de documentos
 carpeta = "Informacion_de_la_empresa"
+
+biblioteca_de_archivos = []  # Lista para almacenar los nombres de los archivos que vamos a procesar
 
 # 1. os.listdir(carpeta) crea una lista con todos los nombres de archivos dentro de esa carpeta.
 # 2. El 'for' hace que el programa tome un nombre a la vez y lo guarde en 'nombre_archivo'.
@@ -29,12 +32,23 @@ for nombre_archivo in os.listdir(carpeta):
         # Aquí le das instrucciones distintas a la computadora según el formato.
         if nombre_archivo.endswith(".pdf"):
             # Aquí pondrías la lógica: abrir con fitz, extraer texto, enviar a la IA.
-            print(f"--> Detectado archivo PDF: {nombre_archivo}")
+            #Prueba
+            #print(f"--> Detectado archivo PDF: {nombre_archivo}")
 
-            print("Prueba_ 1")
-            resultado = limpiador_archivos_pdf_con_tablas(ruta_completa)
+            #Procesamiento de archvos PDF con tablas 
+            contenido_crudo  = limpiador_archivos_pdf_con_tablas(ruta_completa)
 
-            print(resultado)
+            #Limpiar y divdir archivos
+            fragmentos = limpiar_y_dividir_archivos(contenido_crudo, tamano_chunk=1000, overlap=100)
+
+            for i,fragmento in enumerate(fragmentos):
+                # Guardar cada fragmento en la lista de archivos procesados
+                biblioteca_de_archivos.append({
+                    "nombre_archivo": nombre_archivo,
+                    "fragmento_id":i,
+                    "contenido": fragmento
+                })
+            
             
         elif nombre_archivo.endswith(".txt"):
             # Aquí pondrías la lógica: abrir con open(), leer el texto, enviar a la IA.
@@ -53,6 +67,15 @@ for nombre_archivo in os.listdir(carpeta):
 
 
 
+
+#Testeo para verificar que la informacion se haya guardado de forma correcta 
+print(f"se han procesado {len(biblioteca_de_archivos)} archivos correctamente.")
+
+#Me muestra la psocion en la que se encunetra mi archivo con el respetivo nombre 
+print("----Contenido de los archivos procesados----")
+for i ,item in enumerate(biblioteca_de_archivos):
+    print(f"posicion {i}: {item['nombre_archivo']}")
+    
 
 
 

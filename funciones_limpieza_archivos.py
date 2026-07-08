@@ -1,6 +1,7 @@
 import fitz  # PyMuPDF: la herramienta que "lee" los PDF
+import re 
 
-
+#Almacena todos los datos en un string 
 def limpiador_archivos_pdf_con_tablas(ruta):
     doc =  fitz.open(ruta)
     contenido_estructurado = ""
@@ -17,3 +18,18 @@ def limpiador_archivos_pdf_con_tablas(ruta):
                  contenido_estructurado += "\n" + tab.to_markdown() + "\n"
     
     return contenido_estructurado
+
+
+def limpiar_y_dividir_archivos(texto,tamano_chunk=1000, overlap=100):
+      # 1. LIMPIEZA
+    # Quitar saltos de línea, espacios extra y caracteres raros
+    texto_limpio = re.sub(r'\s+', ' ', texto).strip()
+    
+    # 2. DIVISIÓN (CHUNKING)
+    # Creamos trozos de 'tamano_chunk' caracteres
+    chunks = []
+    for i in range(0, len(texto_limpio), tamano_chunk - overlap):
+        fragmento = texto_limpio[i:i + tamano_chunk]
+        chunks.append(fragmento)
+        
+    return chunks
