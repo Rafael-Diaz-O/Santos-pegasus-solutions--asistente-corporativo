@@ -68,14 +68,19 @@ for nombre_archivo in os.listdir(carpeta):
 
 
 
-#Testeo para verificar que la informacion se haya guardado de forma correcta 
-print(f"se han procesado {len(biblioteca_de_archivos)} archivos correctamente.")
+# #Testeo para verificar que la informacion se haya guardado de forma correcta 
+# print(f"se han procesado {len(biblioteca_de_archivos)} archivos correctamente.")
 
-#Me muestra la psocion en la que se encunetra mi archivo con el respetivo nombre 
-print("----Contenido de los archivos procesados----")
-for i ,item in enumerate(biblioteca_de_archivos):
-    print(f"posicion {i}: {item['nombre_archivo']}")
+# #Me muestra la psocion en la que se encunetra mi archivo con el respetivo nombre 
+# print("----Contenido de los archivos procesados----")
+# for i ,item in enumerate(biblioteca_de_archivos):
+#     print(f"posicion {i}: {item['nombre_archivo']}")
     
+
+# Así verás la diferencia entre los fragmentos:
+for i, item in enumerate(biblioteca_de_archivos):
+    # Imprime el ID del fragmento junto con el nombre del archivo
+    print(f"Posición {i}: {item['nombre_archivo']} | Parte: {item['fragmento_id']} | Texto: {item['contenido'][:15]}...")
 
 
 
