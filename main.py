@@ -1,8 +1,8 @@
 import os  #Manipulacion de rutas de archivo 
 import fitz # PyMuPDF: la herramienta que "lee" los PDF
-from funciones_limpieza_archivos import limpiador_archivos_pdf_con_tablas  # Importamos la función que limpia los archivos PDF con tablas
-from funciones_limpieza_archivos import limpiar_y_dividir_archivos  # Importamos la función que limpia y divide el texto en chunks
-
+from procesamiento_archivos import limpiador_archivos_pdf_con_tablas  # Importamos la función que limpia los archivos PDF con tablas
+from procesamiento_archivos import limpiar_y_dividir_archivos  # Importamos la función que limpia y divide el texto en chunks
+from almacenamiento import indexar_con_embeddings_explicitos  # Importamos la función que indexa los embeddings explícitos
 #from openai import OpenAI
 
 #Lectura de Archivo 
@@ -87,3 +87,8 @@ for nombre_archivo in os.listdir(carpeta):
 
 print("----Iniciando el proceso de indexación y almacenamiento en la base de datos de vectores----")
 
+#indexar_con_embeddings_explicitos(biblioteca_de_archivos)
+
+print("1. Antes de llamar a indexar")
+indexar_con_embeddings_explicitos(biblioteca_de_archivos)
+print("2. Después de llamar a indexar")

@@ -6,8 +6,9 @@ from sentence_transformers import SentenceTransformer
 
 modelo_embedding = SentenceTransformer('all-MiniLM-L6-v2')
 
-def idexar_con_embeddings_explicitos(lista_de_chunks):
-     cliente = chromadb.PersistentClient(path="./base_de_datos_inteligente")
+def indexar_con_embeddings_explicitos(lista_de_chunks):
+     print("Estoy entrando en la funcion idexacion")
+     cliente = chromadb.PersistentClient(path="./base_de_datos_inteligente") #Me crea un nuevo archivo 
      coleccion = cliente.get_or_create_collection(name="documentos_empresa")
 
      #Convertimos cada texto en vectores(embendding) manualmente 
@@ -23,7 +24,7 @@ def idexar_con_embeddings_explicitos(lista_de_chunks):
         id_unico = f"{nombre}_{item['fragmento_id']}"
 
         # Guardamos en la base de datos el vector y su texto 
-        coleccion.add(
+        coleccion.upsert( #Me rescribe la base datos varias veces cada que ejecute 
              ids=[id_unico],
              embeddings=[vector],#Pasamos el vector calculado manualmente 
              documents=[texto],
