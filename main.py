@@ -3,7 +3,7 @@ import fitz # PyMuPDF: la herramienta que "lee" los PDF
 from procesamiento_archivos import limpiador_archivos_pdf_con_tablas  # Importamos la función que limpia los archivos PDF con tablas
 from procesamiento_archivos import limpiar_y_dividir_archivos  # Importamos la función que limpia y divide el texto en chunks
 from almacenamiento import indexar_con_embeddings_explicitos  # Importamos la función que indexa los embeddings explícitos
-#from openai import OpenAI
+from motor_recuperacion_rag import buscador_en_base_de_datos  # Importamos la función que busca en la base de datos de vectores
 
 #Lectura de Archivo 
 
@@ -88,7 +88,14 @@ for nombre_archivo in os.listdir(carpeta):
 print("----Iniciando el proceso de indexación y almacenamiento en la base de datos de vectores----")
 
 #indexar_con_embeddings_explicitos(biblioteca_de_archivos)
-
-print("1. Antes de llamar a indexar")
+#Se pasa la lista de archivos procesados a la función que se encarga de indexarlos y almacenarlos en la base de datos de vectores.
 indexar_con_embeddings_explicitos(biblioteca_de_archivos)
-print("2. Después de llamar a indexar")
+
+print("Iniciando Rag")
+
+pregunta = "¿Cuál es la política de vacaciones de la empresa?"
+respuesta = buscador_en_base_de_datos(pregunta) #Le pasamos uno por que la funcion tiene el otro parametro por defecto 
+
+#Imprimir lo que chromeDB me devuelve
+for i,documento in enumerate(respuesta['documents'][0]):
+    print(f"Resultado {i+1}: {documento}\n")

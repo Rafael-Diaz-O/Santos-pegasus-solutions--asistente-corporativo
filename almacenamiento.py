@@ -7,7 +7,7 @@ from sentence_transformers import SentenceTransformer
 modelo_embedding = SentenceTransformer('all-MiniLM-L6-v2')
 
 def indexar_con_embeddings_explicitos(lista_de_chunks):
-     print("Estoy entrando en la funcion idexacion")
+     
      cliente = chromadb.PersistentClient(path="./base_de_datos_inteligente") #Me crea un nuevo archivo 
      coleccion = cliente.get_or_create_collection(name="documentos_empresa")
 
