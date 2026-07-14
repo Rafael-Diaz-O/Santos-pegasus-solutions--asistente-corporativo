@@ -1,2 +1,3 @@
 chromadb 
 SentenceTransformer
+sentence-transformers

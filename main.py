@@ -4,7 +4,7 @@ from procesamiento_archivos import limpiador_archivos_pdf_con_tablas  # Importam
 from procesamiento_archivos import limpiar_y_dividir_archivos  # Importamos la función que limpia y divide el texto en chunks
 from almacenamiento import indexar_con_embeddings_explicitos  # Importamos la función que indexa los embeddings explícitos
 from motor_recuperacion_rag import buscador_en_base_de_datos  # Importamos la función que busca en la base de datos de vectores
-
+from motor_recuperacion_rag import reclasificar_resultados  # Importamos la función que reclasifica los resultados usando un modelo de re-ranking
 #Lectura de Archivo 
 
 # Definimos dónde está nuestra "biblioteca" de documentos
@@ -91,11 +91,25 @@ print("----Iniciando el proceso de indexación y almacenamiento en la base de da
 #Se pasa la lista de archivos procesados a la función que se encarga de indexarlos y almacenarlos en la base de datos de vectores.
 indexar_con_embeddings_explicitos(biblioteca_de_archivos)
 
-print("Iniciando Rag")
+print("--- Sistema RAG Inteligente ---")
+pregunta = input("Haz una pregunta: ")
 
-pregunta = "¿Cuál es la política de vacaciones de la empresa?"
-respuesta = buscador_en_base_de_datos(pregunta) #Le pasamos uno por que la funcion tiene el otro parametro por defecto 
+# 1. Búsqueda amplia
+candidatos = buscador_en_base_de_datos(pregunta, n_resultados=10)
+# ¡Ojo! Verifica que 'candidatos' no esté vacío antes de acceder
+if candidatos['documents'] and candidatos['documents'][0]:
+    documentos = candidatos['documents'][0]
 
-#Imprimir lo que chromeDB me devuelve
-for i,documento in enumerate(respuesta['documents'][0]):
-    print(f"Resultado {i+1}: {documento}\n")
+    # 2. Reclasificación
+    top_resultados = reclasificar_resultados(pregunta, documentos)
+
+    # Cambia esta parte en tu main.py
+# Fíjate bien: el orden es (puntaje, texto) porque así lo definimos en el zip
+    for puntaje, texto in top_resultados[:3]:
+    # Como puntaje ya es un numpy.float32, puedes usarlo directamente
+    # Sin embargo, para mayor seguridad, dejémoslo así:
+        print(f"Puntaje: {puntaje:.2f} | Texto: {texto}\n")
+    
+    print(f"Puntaje: {float(puntaje):.2f} | Texto: {texto}\n")
+else:
+    print("No se encontraron documentos relacionados.")
