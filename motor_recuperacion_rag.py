@@ -64,7 +64,7 @@ def generar_respuesta(pregunta,contexto):
     )
 
     completion = client.chat.completions.create(
-        model="llama3-70b-8192", # Es un modelo excelente y muy rápido en Groq
+        model="llama-3.3-70b-versatile", # Es un modelo excelente y muy rápido en Groq
         messages=[{
 
             "role": "user", 

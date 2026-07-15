@@ -6,6 +6,7 @@ from almacenamiento import indexar_con_embeddings_explicitos  # Importamos la fu
 from motor_recuperacion_rag import buscador_en_base_de_datos  # Importamos la función que busca en la base de datos de vectores
 from motor_recuperacion_rag import reclasificar_resultados  # Importamos la función que reclasifica los resultados usando un modelo de re-ranking
 #Lectura de Archivo 
+from motor_recuperacion_rag import generar_respuesta  # Importamos la función que genera respuestas usando un modelo LLM
 
 # Definimos dónde está nuestra "biblioteca" de documentos
 carpeta = "Informacion_de_la_empresa"
@@ -85,31 +86,46 @@ for nombre_archivo in os.listdir(carpeta):
 #  #Indezaccion de Archivos y almacenamiento en base de dactos de vectores 
 
 
-print("----Iniciando el proceso de indexación y almacenamiento en la base de datos de vectores----")
+# print("----Iniciando el proceso de indexación y almacenamiento en la base de datos de vectores----")
 
-#indexar_con_embeddings_explicitos(biblioteca_de_archivos)
-#Se pasa la lista de archivos procesados a la función que se encarga de indexarlos y almacenarlos en la base de datos de vectores.
-indexar_con_embeddings_explicitos(biblioteca_de_archivos)
+# #indexar_con_embeddings_explicitos(biblioteca_de_archivos)
+# #Se pasa la lista de archivos procesados a la función que se encarga de indexarlos y almacenarlos en la base de datos de vectores.
+# indexar_con_embeddings_explicitos(biblioteca_de_archivos)
 
-print("--- Sistema RAG Inteligente ---")
-pregunta = input("Haz una pregunta: ")
+# print("--- Sistema RAG Inteligente ---")
+# pregunta = input("Haz una pregunta: ")
 
-# 1. Búsqueda amplia
-candidatos = buscador_en_base_de_datos(pregunta, n_resultados=10)
-# ¡Ojo! Verifica que 'candidatos' no esté vacío antes de acceder
-if candidatos['documents'] and candidatos['documents'][0]:
-    documentos = candidatos['documents'][0]
+# # 1. Búsqueda amplia
+# candidatos = buscador_en_base_de_datos(pregunta, n_resultados=10)
+# # ¡Ojo! Verifica que 'candidatos' no esté vacío antes de acceder
+# if candidatos['documents'] and candidatos['documents'][0]:
+#     documentos = candidatos['documents'][0]
 
-    # 2. Reclasificación
-    top_resultados = reclasificar_resultados(pregunta, documentos)
+#     # 2. Reclasificación
+#     top_resultados = reclasificar_resultados(pregunta, documentos)
 
-    # Cambia esta parte en tu main.py
-# Fíjate bien: el orden es (puntaje, texto) porque así lo definimos en el zip
-    for puntaje, texto in top_resultados[:3]:
-    # Como puntaje ya es un numpy.float32, puedes usarlo directamente
-    # Sin embargo, para mayor seguridad, dejémoslo así:
-        print(f"Puntaje: {puntaje:.2f} | Texto: {texto}\n")
+#     # Cambia esta parte en tu main.py
+# # Fíjate bien: el orden es (puntaje, texto) porque así lo definimos en el zip
+#     for puntaje, texto in top_resultados[:3]:
+#     # Como puntaje ya es un numpy.float32, puedes usarlo directamente
+#     # Sin embargo, para mayor seguridad, dejémoslo así:
+#         print(f"Puntaje: {puntaje:.2f} | Texto: {texto}\n")
     
-    print(f"Puntaje: {float(puntaje):.2f} | Texto: {texto}\n")
-else:
-    print("No se encontraron documentos relacionados.")
+#     print(f"Puntaje: {float(puntaje):.2f} | Texto: {texto}\n")
+# else:
+#     print("No se encontraron documentos relacionados.")
+
+pregunta = input("Ingrese su pregunta: ")
+
+candidatos = buscador_en_base_de_datos(pregunta, n_resultados=10)
+documentos = candidatos['documents'][0]
+
+top_resultados = reclasificar_resultados(pregunta, documentos)
+
+# Unimos los 3 mejores textos
+contexto_final = "\n".join([texto for puntaje, texto in top_resultados[:3]])
+
+respuesta_final = generar_respuesta(pregunta, contexto_final)
+
+print("\n--- Respuesta del Asistente (Santo Pegasus) ---")
+print(respuesta_final)
