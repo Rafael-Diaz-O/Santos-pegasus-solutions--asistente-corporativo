@@ -1,6 +1,9 @@
 import chromadb
+import os #Trabajar con variables de entorno
 from sentence_transformers import SentenceTransformer
 from sentence_transformers import CrossEncoder 
+from openai  import OpenAI
+from dotenv import load_dotenv 
 
 
 """Sistema RAG (Recuperación Augmentada de Información) para responder preguntas sobre documentos de la empresa.
@@ -45,3 +48,39 @@ def reclasificar_resultados(pregunta,documentos_resultados):
     #Con reverse=True le decimos que ordene de mayor a menor 
 
     return resultados_ordenados #Se devuelven los resultados ordenados por puntaje
+
+
+
+#Generando respuesta con el lllm 
+
+load_dotenv()  # Cargar variables de entorno desde el archivo .env
+
+def generar_respuesta(pregunta,contexto):
+    #Configurando groq (compatible con openai) para generar la respuesta
+    client = OpenAI(
+
+        api_key=os.getenv("GROQ_API_KEY"), # Obtener la clave de la API desde las variables de entorno
+        base_url="https://api.groq.com/openai/v1"
+    )
+
+    completion = client.chat.completions.create(
+        model="llama3-70b-8192", # Es un modelo excelente y muy rápido en Groq
+        messages=[{
+
+            "role": "user", 
+
+            "content": f"""Eres un asistente experto de la empresa Santo Pegasus.
+            Tu trabajo es responder preguntas basándote ESTRICTAMENTE en el contexto proporcionado abajo.
+            Si la información no aparece en el contexto, di que no tienes suficiente información para responder.
+    
+            CONTEXTO:
+            {contexto}
+
+            PREGUNTA:
+            {pregunta}"""
+            
+            }],
+        temperature=0.1
+    )
+
+    return completion.choices[0].message.content #Solo devolvera el texto del mensaje 

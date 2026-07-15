@@ -1,3 +1,5 @@
 chromadb 
 SentenceTransformer
 sentence-transformers
+openai 
+python-dotenv
