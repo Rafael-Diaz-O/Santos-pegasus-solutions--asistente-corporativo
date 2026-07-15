@@ -117,15 +117,32 @@ for nombre_archivo in os.listdir(carpeta):
 
 pregunta = input("Ingrese su pregunta: ")
 
+# 1. Recuperación
 candidatos = buscador_en_base_de_datos(pregunta, n_resultados=10)
 documentos = candidatos['documents'][0]
+metadatos = candidatos['metadatas'][0] # Obtenemos los metadatos correspondientes
 
+# 2. Reclasificación
 top_resultados = reclasificar_resultados(pregunta, documentos)
 
-# Unimos los 3 mejores textos
-contexto_final = "\n".join([texto for puntaje, texto in top_resultados[:3]])
+# 3. Validación de calidad en las repsuesta 
+mejor_puntaje = top_resultados[0][0] #Almacena los valores de la mejor respuesta el resultado numerico 
+UMBRAL_CONFIANZA = 0.5 #Es el numero de calidad de la respuesta que tan hacertado es el contenido que sele pase 
 
-respuesta_final = generar_respuesta(pregunta, contexto_final)
-
-print("\n--- Respuesta del Asistente (Santo Pegasus) ---")
-print(respuesta_final)
+if mejor_puntaje < UMBRAL_CONFIANZA:
+    print("\nRespuesta: No encontré información suficientemente relevante en la base de conocimientos.")
+else:
+    # Ensamblaje con fuentes reales 
+    contexto_final = ""
+    # Iteramos sobre los 3 mejores resultados
+    for i in range(min(3, len(top_resultados))):
+        puntaje, texto = top_resultados[i]
+        # Aquí obtenemos el nombre del archivo real desde los metadatos
+        nombre_archivo = metadatos[i].get("nombre_archivo", "Desconocido")
+        contexto_final += f"--- FUENTE: {nombre_archivo} ---\nCONTENIDO: {texto}\n\n"
+    
+    # 5. Llamada única a la función de generación
+    respuesta_final = generar_respuesta(pregunta, contexto_final)
+    
+    print("\n--- Respuesta del Asistente (Santo Pegasus) ---")
+    print(respuesta_final)

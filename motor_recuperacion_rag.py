@@ -69,15 +69,19 @@ def generar_respuesta(pregunta,contexto):
 
             "role": "user", 
 
-            "content": f"""Eres un asistente experto de la empresa Santo Pegasus.
-            Tu trabajo es responder preguntas basándote ESTRICTAMENTE en el contexto proporcionado abajo.
-            Si la información no aparece en el contexto, di que no tienes suficiente información para responder.
-    
-            CONTEXTO:
-            {contexto}
+            "content": f"""Eres un asistente experto de Santo Pegasus. 
+                        Tu objetivo es responder preguntas basándote ÚNICAMENTE en el contexto de abajo.
 
-            PREGUNTA:
-            {pregunta}"""
+                        REGLAS:
+                        1. Si la respuesta no está en el contexto, di: "No encontré esta información en los documentos disponibles. Por favor, contacta al área responsable."
+                        2. Al final de tu respuesta, indica siempre la FUENTE de donde extrajiste la información.
+                        3. No utilices información externa bajo ninguna circunstancia.
+
+                            CONTEXTO:
+                            {contexto}
+
+                            PREGUNTA:
+                            {pregunta}"""
             
             }],
         temperature=0.1
