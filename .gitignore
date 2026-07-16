@@ -10,6 +10,11 @@ base_de_datos_inteligente/
 
 __pycache__/
 
+.agents/
+
+.agents
+
+.agents/skills/developing-with-streamlit/
 
 
 
