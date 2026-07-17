@@ -4,7 +4,7 @@ Pendientes.txt
 
 Aprendizajes.txt
 
-base_de_datos_inteligente/
+#base_de_datos_inteligente/ #Lo quito para poder desplegarlo pero si esto fuera para una empresa deberia estar minimo cifrado antes d eir a produccion por que se hacen publicos la info de los archivos de la empresa 
 
 .env
 
