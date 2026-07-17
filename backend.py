@@ -1,6 +1,6 @@
 """
 backend.py
-==========
+===========
 Conecta el frontend (app.py) con tu motor RAG real (motor_recuperacion_rag.py).
 
 IMPORTANTE SOBRE UBICACION DE ARCHIVOS:

@@ -4,7 +4,7 @@ app.py
 Interfaz de chat simple y funcional para el agente interno (RAG).
 Ejecutar con:
 
-    streamlit run app.py
+    streamlit run app.py   
 
 No busca ser un diseño elaborado: cumple lo pedido (campo de pregunta,
 historial de conversación, fuentes citadas, feedback, y aviso de que es un
