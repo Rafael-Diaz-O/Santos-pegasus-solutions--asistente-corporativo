@@ -12,11 +12,11 @@ Agente de IA corporativo que responde preguntas basándose únicamente en los do
 
 **Pregunta sin información en la base de conocimientos** — el agente reconoce que no tiene contexto suficiente en vez de inventar una respuesta, y la registra para revisión del equipo:
 
-![Captura del agente indicando que no encontró información relevante](screenshots/captura_1_pregunta.png)
+![Captura del agente indicando que no encontró información relevante](captura_1_pregunta.png)
 
 **Pregunta con contexto disponible** — el agente responde citando la fuente y muestra el documento utilizado en el expander "Fuentes utilizadas":
 
-![Captura del agente respondiendo con fuentes citadas](screenshots/captura_2_respuesta.png)
+![Captura del agente respondiendo con fuentes citadas](captura_2_respuesta.png)
 
 ---
 
