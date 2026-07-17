@@ -65,4 +65,7 @@ Se abre en `http://localhost:8501`.
 | Ciclo de mejora (qué documentos faltan) | Revisar preguntas recurrentes en `unanswered_log.csv` |
 | Ciclo de mejora (ajustes de prompt/recuperación) | Revisar respuestas con `rating = negative` |
 
-El pipeline de actualización de documentos, la curaduría de contenido y la actualización del modelo son procesos externos a este frontend (normalmente re-ejecutar `main.py` cuando cambian los documentos fuente); el chat solo consume el índice vectorial ya generado.
+El pipeline de actualización de documentos, la curaduría de contenido y la actualización del modelo son procesos externos a este frontend (normalmente re-ejecutar `main.py` cuando cambian los documentos 
+fuente); el chat solo consume el índice vectorial ya generado.
+
+Se uso Streamlit para subir el proyeto a la nube 
