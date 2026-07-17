@@ -17,6 +17,10 @@ __pycache__/
 .agents/skills/developing-with-streamlit/
 
 
+unanswered_log.csv
+
+frontend/files/unanswered_log.csv
+
 
 
 

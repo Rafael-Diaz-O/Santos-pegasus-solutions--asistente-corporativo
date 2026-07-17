@@ -28,12 +28,7 @@ if "messages" not in st.session_state:
 # Encabezado + aviso obligatorio de que es un agente de IA
 # --------------------------------------------------------------------------
 st.title("🤖 Asistente Interno")
-st.info(
-    "**Estás conversando con un agente de IA, no con una persona.** "
-    "Puede cometer errores; verifica la información importante con las "
-    "fuentes citadas o con el equipo responsable.",
-    icon="ℹ️",
-)
+st.caption("Estás conversando con un agente de IA, no con una persona.")
 
 st.divider()
 
@@ -49,7 +44,7 @@ for idx, msg in enumerate(st.session_state.messages):
             if msg.get("sources"):
                 with st.expander("📄 Fuentes utilizadas"):
                     for src in msg["sources"]:
-                        st.markdown(f"- **{src['title']}** _(categoría: {src['category']})_")
+                        st.markdown(f"- **{src['title']}**")
             else:
                 st.caption("Sin fuentes específicas para esta respuesta.")
 
@@ -103,7 +98,7 @@ if question:
         if result["sources"]:
             with st.expander("📄 Fuentes utilizadas"):
                 for src in result["sources"]:
-                    st.markdown(f"- **{src['title']}** _(categoría: {src['category']})_")
+                    st.markdown(f"- **{src['title']}**")
 
     st.session_state.messages.append({
         "role": "assistant",
